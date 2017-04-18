@@ -1,0 +1,87 @@
+<html>
+<head>
+	<title></title>
+	<script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+</head>
+<body>
+<canvas id="myCanvas" width="300px" height="300px" style="border:1px solid #000000;" >
+	<div id="example2-xy" class="mouse-xy">MOUSE XY</div>
+<div id="example2" class="mouse-click">MOUSE CLICK AREA</div>
+
+</canvas>
+</body>
+<style>
+</style>
+<script type="text/javascript">
+var c = document.getElementById("myCanvas");
+var ctx = c.getContext("2d");
+// Create gradient
+var grd = ctx.createLinearGradient(0,0,500,0);
+grd.addColorStop(0,"red");
+grd.addColorStop(1,"white");
+ctx.fillStyle = grd;
+
+
+var points;
+// function getRandomInt(min, max) {
+//   // return Math.floor(Math.random() * (max - min + 1)) + min;
+//   var xAxis, yAxis;
+// }
+
+var xAxis = [], yAxis = [];
+var mosePosX = 0,mosePosY = 0;
+console.log(screen.width, screen.height);
+for( var i = 0; i<500 ; i++){
+	xAxis[i] = Math.floor(Math.random() * 300);
+	yAxis[i] = Math.floor(Math.random() * 300);	
+}
+function draw(){
+	    ctx.clearRect(0,0,300,300);
+	    // var pointsInBounds = [];
+  		for(var i = 0 ; i <500 ; i++){
+  			w=xAxis[i];
+  			y=1;
+			x=yAxis[i];
+			z=1;
+			ctx.fillRect(w,x,y,z);
+			ctx.fillStyle = grd;
+			var a = mosePosX - w;
+			var b = mosePosY - x;
+			if(Math.sqrt( a*a + b*b ) < 0 ){
+				Math.sqrt( a*a + b*b )*= -1;
+			}
+			if(Math.sqrt( a*a + b*b ) < 60){
+					ctx.beginPath();
+				
+					ctx.moveTo(mosePosX, mosePosY);
+					ctx.lineTo(w,x);
+					ctx.lineWidth = 0.1;
+					ctx.strokeStyle = '#ff0000'
+					ctx.stroke();
+				}
+			xAxis[i] += (Math.random() < 0.5 ? -1 : 1);
+			yAxis[i] += (Math.random() < 0.5 ? -1 : 1);
+			ctx.fillRect(mosePosX,mosePosY,2,2);
+			ctx.fillStyle = grd;
+  		}
+  		c = Math.sqrt( a*a + b*b );
+
+	setTimeout(draw, 30);
+}
+
+draw();
+
+$( "#myCanvas" ).mousemove(function( event ) {
+// console.log(event.pageX + ", " + event.pageY);
+mosePosX = event.pageX -12;
+mosePosY = event.pageY -12;
+			ctx.fillRect(mosePosX,mosePosY,2,2);
+			ctx.fillStyle = grd;
+
+});
+
+</script>
+</html>
